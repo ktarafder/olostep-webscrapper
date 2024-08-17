@@ -10,7 +10,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('pub'));
+app.use(express.static('index'));
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/olostep');
@@ -18,15 +18,26 @@ mongoose.connect('mongodb://localhost:27017/olostep');
 // Example route to scrape data and analyze
 app.post('/scrape', async (req, res) => {
     const { url } = req.body;
+
     console.log('Received URL:', url);
 
+    if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+    }
 
     try {
-        // Launch Puppeteer and scrape the data
+        // Launch Puppeteer and navigate to the URL
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto(url, { timeout: 60000, waitUntil: 'networkidle2' });
-
+        const response = await page.goto(url, { timeout: 60000, waitUntil: 'networkidle2' });
+        
+        if (response.status() === 404) {
+            console.log('Page not found (404)');
+            await browser.close();
+            return res.status(404).json({ error: 'Page not found (404)' });
+        } 
+        
+        // Scrape the data if the page is successfully loaded
         const scrapedData = await page.evaluate(() => {
             return {
                 title: document.title,
@@ -34,30 +45,31 @@ app.post('/scrape', async (req, res) => {
             };
         });
 
-        console.log(scrapedData);
-        
+        console.log('Scraped Data:', scrapedData);
 
         await browser.close();
 
         // Analyze data with Universal Sentence Encoder (USE)
-        const model = await use.load(); // Load the USE model
-        const embeddings = await model.embed([scrapedData.content]); // Get embeddings for the scraped content
+        const model = await use.load();
+        const embeddings = await model.embed([scrapedData.content]);
 
         // Save data and analysis to MongoDB
         const newData = new Data({
             url,
             scrapedData,
-            analysis: embeddings.arraySync()[0], // Convert embeddings to a regular array and store it
+            analysis: embeddings.arraySync()[0],
         });
         await newData.save();
 
         // Send the result back to the client
         res.json({ scrapedData, analysis: embeddings.arraySync()[0] });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred while processing your request.' });
+        console.error('Error during processing.', error);
+        res.status(500).text('An error occurred. Please check your URL');
     }
 });
+
+
 
 // Start the server
 app.listen(3000, () => {
