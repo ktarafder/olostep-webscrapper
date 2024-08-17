@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olostep Scraper</title>
+</head>
+<body>
+    <h1>Olostep Scraper</h1>
+    <form id="urlForm">
+        <input type="text" name="url" placeholder="Enter URL" required>
+        <button type="submit">Scrape and Analyze</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+    document.getElementById('urlForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Retrieve the URL from the form
+    const formData = new FormData(e.target);
+    const url = formData.get('url'); // Get the value of the 'url' input field
+
+    console.log('Sending URL:', { url }); // Log the URL to ensure it's correctly captured
+
+    // Send the URL to the backend
+    const response = await fetch('/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { url },
+    });
+
+    const result = await response.json();
+    document.getElementById('result').innerText = JSON.stringify(result, null, 2);
+});
+
+    </script>
+</body>
+</html>

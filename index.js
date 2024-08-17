@@ -10,16 +10,16 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('pub'));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/olostep', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/olostep');
 
 // Example route to scrape data and analyze
 app.post('/scrape', async (req, res) => {
-    const { url } = req.url;
+    const { url } = req.body;
+    console.log('Received URL:', url);
+
 
     try {
         // Launch Puppeteer and scrape the data
@@ -35,6 +35,7 @@ app.post('/scrape', async (req, res) => {
         });
 
         console.log(scrapedData);
+        
 
         await browser.close();
 
