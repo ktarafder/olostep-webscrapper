@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraped Data</title>
+   
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+        /* Inline CSS to add scrolling */
+        #scraped-content {
+            max-height: 80vh; /* Set the max height to 70% of the viewport height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px;
+            border: 1px solid #ccc; /* Optional: Add a border around the content */
+            background-color: #f9f9f9; /* Optional: Background color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Scraped Data</h1>
+        </header>
+        <section id="scraped-content">
+            <div id="content"></div>
+        </section>
+    </div>
+
+    <script>
+        // Load the scraped data from localStorage and display it
+        const scrapedData = JSON.parse(localStorage.getItem('scrapedData'));
+        console.log('Retrieved data:', scrapedData);
+
+        if (scrapedData) {
+            document.getElementById('content').innerHTML = scrapedData.content;
+        } else {
+            document.getElementById('content').innerText = "No data available.";
+        }
+    </script>
+</body>
+</html>
+

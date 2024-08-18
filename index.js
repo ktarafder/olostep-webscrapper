@@ -65,7 +65,6 @@ app.post('/scrape', async (req, res) => {
         const newData = new Data({
             url,
             scrapedData: article,
-            analysis: embeddings.arraySync()[0],
             contentType,
             topic,
             sentiment: sentimentResult,
@@ -74,10 +73,12 @@ app.post('/scrape', async (req, res) => {
 
         // Send the result back to the client
         res.json({
-            scrapedData: article["textContent"],
-            contentType,
+            title: article["title"],
             topic,
             sentiment: sentimentResult,
+            contentType,
+            content: article["content"],
+            textContent: article["textContent"],
         });
     } catch (error) {
         console.error('Error during processing.', error);
