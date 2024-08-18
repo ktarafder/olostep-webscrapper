@@ -12,12 +12,13 @@ const routes = require('./routes/olostep');
 
 const app = express();
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('index'));
 app.use("/api", routes);
 
-mongoose.connect('mongodb://localhost:27017/olostep');
+mongoose.connect('mongodb+srv://ktarafder01:_dYvX4F_m.Sb-G.@olostep-webscrapper.8iq0y.mongodb.net/?retryWrites=true&w=majority&appName=olostep-webscrapper');
 
 app.post('/scrape', async (req, res) => {
     const { url } = req.body;
@@ -87,7 +88,7 @@ app.post('/scrape', async (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+    console.log('Server is running on 3000');
 });
 
 // Helper functions remain the same
