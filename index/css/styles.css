@@ -4,137 +4,118 @@ body {
     background: linear-gradient(135deg, #4b0082, #00ffcc, #1405e8);
     margin: 0;
     padding: 0;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+    min-height: 100vh; /* Ensure the body takes up at least the full height */
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Allow content to stack from the top */
+    overflow-y: auto; /* Enable vertical scrollbar */
+}
+
+/* Customize Scrollbar */
+body::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #8e44ad, #3498db); /* Gradient color for the scrollbar thumb */
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #1e1e1e; /* Track color */
+}
+
+/* Container Styling */
+.container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    margin: 20px auto; /* Allow some spacing for better scrolling */
 }
 
-/* Container for Wave Animation */
-.waves-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.2; /* Reduced opacity */
+/* Logo Container with Glossy Circular Frame */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* Space between logo and title */
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    border-radius: 25%; /* Circular frame */
+    background: linear-gradient(135deg, #44fb02, #6314ed);
+    padding: 5px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
-/* Wave Layers */
-.wave {
+.logo::before {
+    content: '';
     position: absolute;
-    width: 200%;
-    height: 100%;
+    top: -50%;
     left: -50%;
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg');
-    background-size: cover;
-    opacity: 0.3; /* Further reduced opacity for subtle visibility */
-    animation: waveMove 10s linear infinite;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3) 25%, rgba(255, 255, 255, 0) 50%);
+    transform: rotate(25deg);
+    animation: shine 5s infinite ease-in-out;
 }
 
-/* Different Animations for Layered Waves */
-.wave:nth-child(1) {
-    top: 20%;
-    animation-duration: 15s;
-    animation-direction: alternate-reverse;
-}
-
-.wave:nth-child(2) {
-    top: 50%;
-    animation-duration: 12s;
-}
-
-.wave:nth-child(3) {
-    top: 80%;
-    animation-duration: 18s;
-    animation-direction: alternate;
-}
-
-/* Keyframes for Up-and-Down Wave Movement */
-@keyframes waveMove {
+@keyframes shine {
     0% {
-        transform: translateX(0) translateY(10px);
-    }
-    50% {
-        transform: translateX(-25%) translateY(-10px);
+        transform: translate(-150%, -150%) rotate(25deg);
     }
     100% {
-        transform: translateX(-50%) translateY(10px);
+        transform: translate(150%, 150%) rotate(25deg);
     }
 }
 
-/* Logo Styling */
-.logo {
-    width: 150px;
-    animation: float 4s ease-in-out infinite;
-    z-index: 2;
-}
-
-/* Header Styling for DATADIGZ with Gradient, Outline, and Letter Animation */
+/* Title Styling */
 header h1 {
-    font-size: 4rem;
-    margin: 10px 0;
-    text-transform: uppercase;
-    font-weight: 900; /* Extra bold */
-    background: linear-gradient(to right, #00ff00, #3498db, #8e44ad); /* Left to right gradient */
+    font-size: 50px;
+    font-weight: 900;
+    background: linear-gradient(to right, #00ff00, #3498db, #8e44ad);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    position: relative;
-    text-shadow: 1px 1px 3px rgba(118, 22, 202, 0.8); /* Subtle white outline */
+    display: inline-block;
+    margin: 10px 0;
+    text-transform: uppercase;
     z-index: 3;
-    display: inline-block;
+    letter-spacing: -5px; /* Closer letter spacing */
+    color: transparent;
+    -webkit-text-stroke: 1.25px #020202ca; /* White outline */
+    position: relative;
 }
 
-/* Letter-by-Letter Animation */
-header h1 span {
-    display: inline-block;
-    opacity: 0;
-    animation: shakeIn 1.5s ease-out forwards;
-    animation-delay: calc(var(--i) * 0.1s); /* Staggered delay for each letter */
-}
-
-/* Keyframes for the Letter-by-Letter Shake Animation */
-@keyframes shakeIn {
-    0% {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    20% {
-        transform: translateY(-10px) rotate(-10deg);
-    }
-    40% {
-        transform: translateY(5px) rotate(10deg);
-    }
-    60% {
-        transform: translateY(-3px) rotate(-5deg);
-    }
-    80% {
-        transform: translateY(1px) rotate(2deg);
-    }
-    100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-}
-
-/* Subtitle Styling */
+/* Subtitle (headline) Styling */
 header p {
-    font-size: 1.5rem;
-    font-weight: 700; /* Make the subtitle bolder */
+    font-size: 25px;
+    font-weight: 700;
     margin-bottom: 30px;
-    opacity: 0.9;
+    opacity: 1.0;
     z-index: 3;
 }
 
 /* Form Section */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 input[type="text"] {
     padding: 15px;
-    width: 300px;
+    width: 100%;
+    max-width: 400px;
     font-size: 1.1rem;
     border: none;
     border-radius: 50px;
@@ -143,10 +124,6 @@ input[type="text"] {
     outline: none;
     transition: box-shadow 0.3s ease-in-out;
     z-index: 3;
-}
-
-input[type="text"]:focus {
-    box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
 }
 
 button {
@@ -169,6 +146,12 @@ button:hover {
 }
 
 /* Result Section */
+#result-section {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 30px;
+}
+
 #result {
     background: #1e1e1e;
     padding: 20px;
@@ -182,17 +165,7 @@ button:hover {
     z-index: 3;
 }
 
-/* 3D Floating Animation */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-/* Media Queries */
+/* Media Queries for Responsiveness */
 @media (max-width: 600px) {
     header h1 {
         font-size: 2.5rem;
@@ -205,4 +178,10 @@ button:hover {
     input[type="text"] {
         width: 80%;
     }
+}
+
+/* Styling the Placeholder Text */
+input[type="text"]::placeholder {
+    color: blue; /* Change the placeholder text color to blue */
+    opacity: 1; /* Ensure the blue color is fully visible */
 }
