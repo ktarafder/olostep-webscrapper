@@ -5,6 +5,7 @@ const puppeteer = require('puppeteer');
 const tf = require('@tensorflow/tfjs-node'); // Correct Node.js backend
 const use = require('@tensorflow-models/universal-sentence-encoder'); // Import USE model
 const Data = require('./models/Schema');
+const sentiment = require('sentiment'); // Import a sentiment analysis library
 
 const app = express();
 
@@ -53,25 +54,69 @@ app.post('/scrape', async (req, res) => {
         const model = await use.load();
         const embeddings = await model.embed([scrapedData.content]);
 
+        // Content Type Categorization (Simple heuristic-based)
+        const contentType = determineContentType(scrapedData);
+
+        // Topic/Subject Categorization (using embeddings and additional models or APIs)
+        const topic = await categorizeByTopic(embeddings);
+
+        // Sentiment Analysis
+        const sentimentResult = analyzeSentiment(scrapedData.content);
+
         // Save data and analysis to MongoDB
         const newData = new Data({
             url,
             scrapedData,
             analysis: embeddings.arraySync()[0],
+            contentType,
+            topic,
+            sentiment: sentimentResult,
         });
         await newData.save();
 
         // Send the result back to the client
-        res.json({ scrapedData, analysis: embeddings.arraySync()[0] });
+        res.json({
+            scrapedData,
+            contentType,
+            topic,
+            sentiment: sentimentResult,
+        });
     } catch (error) {
         console.error('Error during processing.', error);
-        res.status(500).text('An error occurred. Please check your URL');
+        res.status(500).json('An error occurred. Please check your URL!');
     }
 });
-
-
 
 // Start the server
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
 });
+
+// Helper function to determine content type
+function determineContentType(scrapedData) {
+    const { title, content } = scrapedData;
+    if (title.toLowerCase().includes('blog')) {
+        return 'Blog Post';
+    } else if (title.toLowerCase().includes('product')) {
+        return 'Product Page';
+    } else if (content.length > 2000) {
+        return 'Long-form Article';
+    } else {
+        return 'General Web Page';
+    }
+}
+
+// Helper function to categorize by topic
+async function categorizeByTopic(embeddings) {
+    if (embeddings.length === 0) {
+        return 'General';
+    }
+    return 'General';
+}
+
+// Helper function to analyze sentiment
+function analyzeSentiment(content) {
+    const sentimentAnalyzer = new sentiment();
+    const result = sentimentAnalyzer.analyze(content);
+    return result.score > 0 ? 'Positive' : result.score < 0 ? 'Negative' : 'Neutral';
+}
