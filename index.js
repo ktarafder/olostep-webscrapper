@@ -106,19 +106,29 @@ function determineContentType(article) {
 async function categorizeByTopic(textContent) {
     // Define keywords for each category
     const categories = {
-        sports: ['football', 'soccer', 'nba', 'sports', 'team', 'player', 'tournament'],
-        company: ['company', 'business', 'enterprise', 'corporate', 'services', 'solutions'],
-        hotel: ['hotel', 'booking', 'accommodation', 'stay', 'room', 'resort'],
-        educational: ['university', 'school', 'education', 'course', 'learning', 'degree'],
-        news: ['news', 'report', 'headline', 'breaking', 'journal', 'update']
+        technology: ['software', 'AI', 'blockchain', 'hardware', 'web development', 'cloud computing', 'cybersecurity', 'data science', 'IoT', 'machine learning', 'robotics', 'quantum computing', 'DevOps', 'networking', 'mobile development', 'AR/VR', 'automation', '5G technology', 'open source software', 'IT infrastructure'],
+        business: ['stock market', 'finance', 'startups', 'corporate strategy', 'marketing', 'sales', 'e-commerce', 'leadership', 'operations', 'supply chain management', 'entrepreneurship', 'human resources', 'project management', 'venture capital', 'customer relations', 'business analytics', 'risk management', 'accounting', 'business law', 'consulting'],
+        health: ['nutrition', 'mental health', 'fitness', 'medicine', 'wellness', 'public health', 'diseases', 'healthcare industry', 'alternative medicine', 'exercise', 'diet', 'pharmacy', 'therapy', 'preventive health', 'chronic illnesses', 'medical research', 'health technology', 'telemedicine', 'healthcare policy', 'biotech'],
+        science: ['biology', 'space exploration', 'physics', 'environmental science', 'chemistry', 'astronomy', 'geology', 'genetics', 'ecology', 'meteorology', 'paleontology', 'oceanography', 'scientific research', 'anthropology', 'forensic science', 'neuroscience', 'biochemistry', 'zoology', 'botany', 'evolution'],
+        religion: ['islam', 'christianity', 'judaism', 'hinduism', 'buddhism', 'sikhism', 'zoroastrianism', 'jainism', 'taoism', 'shinto', 'confucianism', 'bahá\'í', 'animism', 'paganism', 'indigenous religions', 'new age spirituality', 'spiritualism', 'agnosticism', 'atheism', 'mysticism'],
+        education: ['university education', 'online courses', 'edtech', 'learning techniques', 'K-12 education', 'higher education', 'vocational training', 'homeschooling', 'professional development', 'certifications', 'adult education', 'tutoring', 'special education', 'language learning', 'educational policy', 'curriculum development', 'study techniques', 'distance learning', 'lifelong learning', 'extracurricular activities'],
+        entertainment: ['movies', 'music', 'gaming', 'books', 'sports', 'theater', 'television shows', 'comedy', 'art', 'dance', 'fashion shows', 'events', 'concerts', 'festivals', 'celebrity news', 'streaming services', 'animation', 'cultural events', 'magazines', 'podcasts'],
+        travel: ['hotels', 'destinations', 'cultural tourism', 'adventure travel', 'cruises', 'backpacking', 'luxury travel', 'business travel', 'eco-tourism', 'road trips', 'vacation planning', 'travel tips', 'travel photography', 'travel agencies', 'airlines', 'travel insurance', 'budget travel', 'travel blogging', 'guided tours', 'local experiences'],
+        news: ['politics', 'economy', 'breaking news', 'local news', 'international news', 'weather', 'crime', 'social issues', 'science & technology', 'entertainment news', 'opinion pieces', 'editorials', 'investigative journalism', 'environmental news', 'health news', 'business news', 'sports news', 'legal news', 'educational news', 'celebrity news'],
+        lifestyle: ['fashion', 'food', 'relationships', 'home improvement', 'beauty', 'self-care', 'parenting', 'hobbies', 'DIY projects', 'travel', 'sustainability', 'minimalism', 'personal finance', 'gardening', 'interior design', 'fitness', 'work-life balance', 'productivity', 'social etiquette', 'mindfulness']
     };
 
     let categoryScores = {
-        sports: 0,
-        company: 0,
-        hotel: 0,
-        educational: 0,
-        news: 0
+        technology: 0,
+        business: 0,
+        health: 0,
+        science: 0,
+        religion: 0,
+        education: 0,
+        entertainment: 0,
+        travel: 0,
+        news: 0,
+        lifestyle: 0
     };
 
     // Analyze the text content for each category
