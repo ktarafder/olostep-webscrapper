@@ -87,8 +87,11 @@ app.post('/scrape', async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on 3000');
+// Use the PORT provided by Heroku
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
 });
 
 // Helper functions remain the same
