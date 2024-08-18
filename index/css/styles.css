@@ -1,0 +1,208 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #4b0082, #00ffcc, #1405e8);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container for Wave Animation */
+.waves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.2; /* Reduced opacity */
+    overflow: hidden;
+}
+
+/* Wave Layers */
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    left: -50%;
+    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/85486/wave.svg');
+    background-size: cover;
+    opacity: 0.3; /* Further reduced opacity for subtle visibility */
+    animation: waveMove 10s linear infinite;
+}
+
+/* Different Animations for Layered Waves */
+.wave:nth-child(1) {
+    top: 20%;
+    animation-duration: 15s;
+    animation-direction: alternate-reverse;
+}
+
+.wave:nth-child(2) {
+    top: 50%;
+    animation-duration: 12s;
+}
+
+.wave:nth-child(3) {
+    top: 80%;
+    animation-duration: 18s;
+    animation-direction: alternate;
+}
+
+/* Keyframes for Up-and-Down Wave Movement */
+@keyframes waveMove {
+    0% {
+        transform: translateX(0) translateY(10px);
+    }
+    50% {
+        transform: translateX(-25%) translateY(-10px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(10px);
+    }
+}
+
+/* Logo Styling */
+.logo {
+    width: 150px;
+    animation: float 4s ease-in-out infinite;
+    z-index: 2;
+}
+
+/* Header Styling for DATADIGZ with Gradient, Outline, and Letter Animation */
+header h1 {
+    font-size: 4rem;
+    margin: 10px 0;
+    text-transform: uppercase;
+    font-weight: 900; /* Extra bold */
+    background: linear-gradient(to right, #00ff00, #3498db, #8e44ad); /* Left to right gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    text-shadow: 1px 1px 3px rgba(118, 22, 202, 0.8); /* Subtle white outline */
+    z-index: 3;
+    display: inline-block;
+}
+
+/* Letter-by-Letter Animation */
+header h1 span {
+    display: inline-block;
+    opacity: 0;
+    animation: shakeIn 1.5s ease-out forwards;
+    animation-delay: calc(var(--i) * 0.1s); /* Staggered delay for each letter */
+}
+
+/* Keyframes for the Letter-by-Letter Shake Animation */
+@keyframes shakeIn {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    20% {
+        transform: translateY(-10px) rotate(-10deg);
+    }
+    40% {
+        transform: translateY(5px) rotate(10deg);
+    }
+    60% {
+        transform: translateY(-3px) rotate(-5deg);
+    }
+    80% {
+        transform: translateY(1px) rotate(2deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Subtitle Styling */
+header p {
+    font-size: 1.5rem;
+    font-weight: 700; /* Make the subtitle bolder */
+    margin-bottom: 30px;
+    opacity: 0.9;
+    z-index: 3;
+}
+
+/* Form Section */
+input[type="text"] {
+    padding: 15px;
+    width: 300px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    outline: none;
+    transition: box-shadow 0.3s ease-in-out;
+    z-index: 3;
+}
+
+input[type="text"]:focus {
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background: linear-gradient(45deg, #8e44ad, #3498db);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.5s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+    z-index: 3;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+}
+
+/* Result Section */
+#result {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #00ff00;
+    white-space: pre-wrap;
+    height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px #00ff00;
+    z-index: 3;
+}
+
+/* 3D Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    input[type="text"] {
+        width: 80%;
+    }
+}
