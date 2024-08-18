@@ -54,6 +54,7 @@ function displayResult(data) {
     viewContentLink.href = 'scrapedData.html';
     viewContentLink.target = '_blank'; // Opens the link in a new tab
     viewContentLink.innerText = 'View Scraped Data';
+    viewContentLink.className = 'highlighted-link'; // Add a class for styling
     resultDiv.appendChild(viewContentLink);
 }
 

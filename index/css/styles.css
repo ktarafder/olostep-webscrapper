@@ -182,6 +182,16 @@ button:hover {
 
 /* Styling the Placeholder Text */
 input[type="text"]::placeholder {
-    color: blue; /* Change the placeholder text color to blue */
-    opacity: 1; /* Ensure the blue color is fully visible */
+    color: blue; 
+    opacity: 1; 
+}
+
+.highlighted-link {
+    color: white; 
+    background-color: #4CAF50; 
+    padding: 10px 20px; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    display: inline-block; 
 }
