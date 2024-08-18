@@ -33,12 +33,6 @@ app.post('/scrape', async (req, res) => {
         const page = await browser.newPage();
         const response = await page.goto(url, { timeout: 60000, waitUntil: 'networkidle2' });
         
-        if (response.status() === 404) {
-            console.log('Page not found (404)');
-            await browser.close();
-            return res.status(404).json({ error: 'Page not found (404)' });
-        }
-
         // Get the HTML content of the page
         const htmlContent = await page.content();
         await browser.close();
@@ -62,7 +56,7 @@ app.post('/scrape', async (req, res) => {
         const contentType = determineContentType(article);
 
         // Topic/Subject Categorization (using embeddings and additional models or APIs)
-        const topic = await categorizeByTopic(embeddings);
+        const topic = await categorizeByTopic(article.textContent);
 
         // Sentiment Analysis
         const sentimentResult = analyzeSentiment(article.textContent);
@@ -80,7 +74,7 @@ app.post('/scrape', async (req, res) => {
 
         // Send the result back to the client
         res.json({
-            scrapedData: article,
+            scrapedData: article["textContent"],
             contentType,
             topic,
             sentiment: sentimentResult,
@@ -109,11 +103,44 @@ function determineContentType(article) {
     }
 }
 
-async function categorizeByTopic(embeddings) {
-    if (embeddings.length === 0) {
-        return 'General';
+async function categorizeByTopic(textContent) {
+    // Define keywords for each category
+    const categories = {
+        sports: ['football', 'soccer', 'nba', 'sports', 'team', 'player', 'tournament'],
+        company: ['company', 'business', 'enterprise', 'corporate', 'services', 'solutions'],
+        hotel: ['hotel', 'booking', 'accommodation', 'stay', 'room', 'resort'],
+        educational: ['university', 'school', 'education', 'course', 'learning', 'degree'],
+        news: ['news', 'report', 'headline', 'breaking', 'journal', 'update']
+    };
+
+    let categoryScores = {
+        sports: 0,
+        company: 0,
+        hotel: 0,
+        educational: 0,
+        news: 0
+    };
+
+    // Analyze the text content for each category
+    for (let category in categories) {
+        categories[category].forEach(keyword => {
+            if (textContent.toLowerCase().includes(keyword)) {
+                categoryScores[category]++;
+            }
+        });
     }
-    return 'General';
+
+    // Determine the category with the highest score
+    let maxCategory = 'general';
+    let maxScore = 0;
+    for (let category in categoryScores) {
+        if (categoryScores[category] > maxScore) {
+            maxScore = categoryScores[category];
+            maxCategory = category;
+        }
+    }
+
+    return maxCategory;
 }
 
 function analyzeSentiment(content) {
