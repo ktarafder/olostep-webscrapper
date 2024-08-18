@@ -3,10 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olostep Scraper</title>
+    <title>DataDigz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4b0082, #00ffcc, #000000);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 15px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            color: white;
+            background: linear-gradient(45deg, #8e44ad, #3498db);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.5s, transform 0.2s;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            transform: scale(1.1);
+        }
+        #result {
+            background: #1e1e1e;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            height: 300px;
+            overflow-y: auto;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00;
+            white-space: pre-wrap;
+            box-shadow: 0 0 10px #00ff00;
+        }
+    </style>
 </head>
 <body>
-    <h1>Olostep Scraper</h1>
+    <h1>DataDigz</h1>
     <form id="urlForm">
         <input type="text" name="url" placeholder="Enter URL" required>
         <button type="submit">Scrape and Analyze</button>
@@ -15,25 +74,22 @@
 
     <script>
     document.getElementById('urlForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    // Retrieve the URL from the form
-    const formData = new FormData(e.target);
-    const url = formData.get('url'); // Get the value of the 'url' input field
+        // Retrieve the URL from the form
+        const formData = new FormData(e.target);
+        const url = formData.get('url');
 
-    console.log('Sending URL:', { url }); // Log the URL to ensure it's correctly captured
+        // Send the URL to the backend
+        const response = await fetch('/scrape', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url }),
+        });
 
-    // Send the URL to the backend
-    const response = await fetch('/scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url }),
+        const result = await response.json();
+        document.getElementById('result').innerText = JSON.stringify(result, null, 2);
     });
-
-    const result = await response.json();
-    document.getElementById('result').innerText = JSON.stringify(result, null, 2);
-});
-
     </script>
 </body>
 </html>
